@@ -61,9 +61,10 @@ const uniqSort = function(arr) {
     }
   
     return result.sort((a,b) => a - b);
-  };
+  }
+};
   
   // uniqSort([4,2,2,3,2,2,2,4]); // => [2,3,4]
   // uniqSort([1,5,2,1]); // => [1,2,5]
   
-  module.exports = uniqSort
+module.exports = uniqSort
