@@ -1,0 +1,147 @@
+// Recursion concept: Break down large complex problems into smaller problems until you get to the simplest case (the base case), where each subsequent step to break down the problem adds/does some work towards the desired result which is passed along and the total of the work gives the desired result.
+// Recursion in really just another way to write a loop.   
+// Tip to trace recursion is the call stack game.
+// Recursion is useful in instances where iterative may not be, e.g. tracing a binary tree data structure.
+
+// Recursion in 4 steps:
+// 1. Identify base case(s)  -> condition to end loop, in a for loop it is like ;i < arr.length;
+// 2. Identify recursive case(s)  -> work we want to do on each loop and make sure each time we call our recursion, we are closer to the base case, in a for loop it is like i++ or i--  
+// 3. Return where appropriate
+// 4. Write procedures for each case that brings you closer to the base case(s).
+
+const loopNTimes = (n) => {
+    console.log('n ===', n);
+    if (n <= 1) { // base case
+        return 'complete';
+    }
+    return loopNTimes(n - 1); // must decrement n on the recursive call to work towards the base case n <= 1 to end the recursion/loop. 
+    // more code/work here, this will run/execute after we call a recursion.
+};
+console.log(loopNTimes(3));
+// n === 3
+// n === 2
+// n === 1
+// complete
+
+
+// Iterative solution of a factorial
+function computeFactorial(num) {
+    let result = 1;
+
+    for (i = 2; i <= num; i++) {
+        console.log(`result = ${result} * ${i} (${result * i})`);
+        result *= i;
+    }
+    return result;
+};
+console.log(computeFactorial(5));
+
+// with recursion, what is our base case ?
+// what would be our recursive call and work towards the base case?
+// Recursive solution of a factorial
+
+
+// Iterative example of a loop and its recursion equivalent.
+function logNumbers(start, end) {
+    console.log(`Iteratively looping from ${start} to ${end}`);
+
+    for (let i = start; i <= end; i++) {
+        console.log(`hitting index ${i}`)
+    }
+}
+console.log(`~~~ logNumbers ~~~`)
+logNumbers(1, 2);
+
+// Recursive solution
+function logNumbersRecursively(start, end) {
+    console.log(`Recursively looping from ${start} to ${end}`)
+
+    // define our recursive function
+    function recurse(i) {
+        console.log('hitting index', i);
+        // keep in mind what is the base case, (i < end)
+        if (i < end) {
+            // we want to do work towards that base case each recursion/loop, i + 1
+            recurse(i + 1)
+        }
+    }
+    recurse(start) // must call recurse function and we pass in start arg. (**(we don't call logNumbersRecursively, we call the recurse function inside its body, and the recurse function is added to the stack)
+}
+
+console.log(`~~~ logNumbersRecursively ~~~`)
+logNumbersRecursively(1, 2);
+
+// *Recusion can always be implemented as a loop, but some situations recursion is simpler (nested data structures, traversing trees).
+// *ES6 introduces Tail Call Optimization, TCO, allows some functions to be called without growing the call stack.
+
+
+// COMMON PATTERNS FOR RECURSION
+// Wrapper functions
+// Accumulators
+
+// WRAPPER FUNCTIONS
+// wrapper function uses closure with recursion
+function wrapperFnLoop(start, end) {
+    function recurse(i) {
+        console.log(`looping from ${i} to ${end}`)
+        // recurse function retains access to its parent arg, the end variable due to closure
+        if (i < end) {
+            recurse(i + 1)
+        }
+    }
+    recurse(start);
+}
+
+// no closure
+function MemoFnLoop(i, end) {
+    console.log(`looping from ${i} to ${end}`)
+    if (i < end) {
+        MemoFnLoop(i + 1, end)
+        // some code/work done
+        // more work is done here, and this is called last off the stack as it returns up the recursive call    
+    }
+}
+
+console.log('~~~wrapperFnLoop~~~');
+wrapperFnLoop(1,5)
+console.log('~~~MemoFnLoop~~~');
+MemoFnLoop(1,5)
+
+
+
+// ACCUMULATORS 
+// function will take two params, first an array, second a string.
+// function will return a string, the elements of the first param array joined by the second parameter string between each element. Do not add the second param string at the end of the last string/element.
+
+// similar to .join method, but with this we can control a few more things like...
+// e.g.. apples, oranges, pears -> apples, oranges, AND pears
+// in this case, add between each element except last one -> joinElements([element1,element2,element3], connectString) - > 'element1' + 'connectString' + 'element2' + 'connectString' + 'element3' 
+
+function joinElements(array, joinString) {
+    // recurse has a accumulator, resultSoFar
+    function recurse(index, resultSoFar) {
+        // add to resultSoFar variable the value of the current element in the array
+        resultSoFar += array[index]
+        // check if index is the last element in the array - base case
+        if (index === array.length - 1) {
+        // yes last element in the array, return the accumulator variable resultSoFar.
+            return resultSoFar;
+        } else {
+        // not the last element, so call recursion again with the passed in args, index + 1 (to work towards the base case)
+        // pass in args accumulator + the joinString
+            return recurse(index + 1, resultSoFar + joinString);
+        }
+    }
+    // first call of recurse initialize with default args passed in ->  0, empty string 
+    // initialized/start at array[0] and resultSoFar = ''
+    return recurse(0, '') 
+}
+
+console.log(joinElements(['s', 'cr', 't cod', ' :) :)'], 'e')) 
+// call stack of recurse calls in the joinElements function
+// recurse(0, '')               -> 0, resultSoFar = '' , index + 1
+// recurse(1, '')               -> 1, resultSoFar = '' + 's' + 'e', index + 1  
+// recurse(2, 'se')             -> 2, resultSoFar = 'se' + 'cr' + 'e', index + 1
+// recurse(3, 'secre')          -> 3, resultSoFar = 'secre' + 't cod' + 'e', index + 1
+// recurse(4, 'secret code')    -> 4, resultSoFar = 'secret code' + ' :) :)', base condition met (index === array.length -1)
+// recurse(5, 'secret code :) :)') // base condition (index === array.length -1) is met, pop off recurse calls and return resultSoFar
