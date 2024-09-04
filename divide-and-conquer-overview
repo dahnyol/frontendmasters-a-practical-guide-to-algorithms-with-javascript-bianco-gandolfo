@@ -1,4 +1,6 @@
+// Searching algorithms
 // Divide and Conquer: a recursion technique , great for binary search
+
 
 // Example: Binary Search
 // Search for a value in a sorted array by cutting the side of the search area in half.
@@ -14,6 +16,7 @@
 
 // Linear: we traverse each element starting from 1 until we hit out desired number, this means worse case the 16 searches.
 
+
 // Divide and conquer: 
 // go to middle element of array, number 8, is 8 less than or greater than 10? 
 // Greater than 8, so we cut off the half of numbers less than number 8.
@@ -24,7 +27,6 @@
 
 // Divide and conquer will cut the work half every time because the data set we evaluate is decreasing by half each time.
 // ***in a binary search using divide and conquer, the array must be sorted*** 
-
 
 
 // Linear Search:
@@ -91,7 +93,7 @@ console.log(binarySearch([2,6,7,90,103], 2));
 //**You can move the divide and conquer at the end in the case of a quick sort. There are other implementations as well.
 
 
-// Overview
+// Overview of searching algorithms 
 
 // Recursive calls to a subset of the problem
 // 0. Recognize base case
