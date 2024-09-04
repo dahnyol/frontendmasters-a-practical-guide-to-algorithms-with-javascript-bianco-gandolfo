@@ -1,0 +1,100 @@
+// Divide and Conquer: a recursion technique , great for binary search
+
+// Example: Binary Search
+// Search for a value in a sorted array by cutting the side of the search area in half.
+
+// 1. Go to the middle and Divide.
+// 2. Decide which direction to go/which half to evaluate. 
+// 3. Go < > direction, throw away other half.
+// 4. Continue until arrive at the last elements.
+// 5. This turns a linear time (going through each element to find our desired element) into logarithmic time (all the work we do is cut in half every time).
+
+// We have a sorted Array of 16 numbers 1-16, we want the number 10.
+// [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+
+// Linear: we traverse each element starting from 1 until we hit out desired number, this means worse case the 16 searches.
+
+// Divide and conquer: 
+// go to middle element of array, number 8, is 8 less than or greater than 10? 
+// Greater than 8, so we cut off the half of numbers less than number 8.
+// go to middle element of halved array [8, 9, 10, 11, 12, 13, 14, 15, 16] 
+// is the middle element 12 > than 10? yes, cut off half.
+// go to middle element of halved array [8, 9, 10, 11, 12]
+// is 10 > 10 ? false, 10 < 10 ? false, so 10 must be our desired element.
+
+// Divide and conquer will cut the work half every time because the data set we evaluate is decreasing by half each time.
+// ***in a binary search using divide and conquer, the array must be sorted*** 
+
+
+
+// Linear Search:
+
+// TASK: Implement linear search.
+// Takes two args, first is a list (does not have to be sorted), second is the item in the list we want to find.
+function linearSearch(list, item) {
+    // initialize index as -1, so if not found return -1 aka false, not found.
+    let index = -1;
+    list.forEach((listItem, i) => {
+        // do we want to return the first found? last one? find all instances of duplicates before returning?
+        // this will return the last index of the listItem found if there are duplicates.
+        if (listItem === item) {
+            // if found, assign current item index to the index variable
+            index = i;
+        }
+    })
+    return index;
+}
+console.log(linearSearch([2,6,7,90,103], 90));
+// Big O Notation -> linear, because the worst case scenario, we must traverse the entire array. 
+// number of operations scale ~1:1 with the the number of inputs 
+// however this could change if we passed in a callback into forEach or map methods, the time complexity would be affected.
+
+
+// Binary Search Examples
+function binarySearch(list, item) {
+    // we pass in [2,6,7,90,103], 90
+    let min = 0; // if item > guess value, we move index to the right and slop off the lower values (lower than the guess)
+    let max = list.length - 1; // if the item < guess value, we move index to the left and slop off the higher values (higher than the guess)
+    let guess;
+    // while the min is less than/equal to the max, so while we aren't looping outside of the bounds of our function.
+    while (min <= max) {
+        // start from the center -> guess = index 2 value (half of 5 is 2.5, round down is 2).   
+        guess = Math.floor((min + max) / 2);
+        // if item value at index 2 is === to the item we are searching for, return it. that is our desired item.
+        if (list[guess] === item) {
+            return guess;
+        } else {
+            // current value at index 2 < item we are looking for? 7 < 90
+            if (list[guess] < item) {
+                // as we increment the min we narrow the range we are looking in
+                // increment up to/work towards base case min <= max (this cuts the array/guesses)
+                min = guess + 1;
+            } else {
+                // as we decrement the max we narrow the range we are looking in
+                // decrement the to/work towards base case min <= max 
+                max = guess - 1;
+            }
+        }
+    }
+    return -1;
+}
+console.log(binarySearch([2,6,7,90,103], 103))
+console.log(binarySearch([2,6,7,90,103], 2));
+// we choose the index in the middle (guess).
+// compare our choice, which is the index in the middle (guess), to the item we are looking for.
+// if the item is greater than or less than, you change your min index to the one after it or before it.
+// So if the item > min, the direction is right of your array from the current index, so we set our min index to that current one.
+//*if item > guess value, we move index to the right and slop off the lower values (lower than the guess)
+//*if the item < guess value, we move index to the left and slop off the higher values (higher than the guess)
+
+//**divide and conquer does not require you to divide at the half/middle. 
+//**You can move the divide and conquer at the end in the case of a quick sort. There are other implementations as well.
+
+
+// Overview
+
+// Recursive calls to a subset of the problem
+// 0. Recognize base case
+// 1. Divide: Break problem down during each call
+// 2. Conquer: Do work on each subset
+// 3. Combine: Solutions -> in our Binary Search example this isn't needed as much, but would used/utilized in a Emerge sort.
