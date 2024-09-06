@@ -1,0 +1,162 @@
+Sorting Algorithms
+Along with search algorithms, sorting algorithms are time-intensive operations that are a core to a lot of processing on the day to day web. e.g: google search, sort photos by time stamp, 
+These web operations usually involve large datasets, so searching and sorting is combined with particular data structures and how we get to your solution. Binary search goes nicely with a binary search tree.
+
+
+MAIN TYPES OF SORTING (Comparsion Sorts)
+
+NAIVE SORTS //
+examples: Bubble Sort, Insertion Sort, Selection Sort
+
+Keep looping and comparing values until the entire list is sorted.
+O(x ^ n) Quadratic time as we must compare everything (element) to everything at some point (nested loops).
+
+~
+Bubble Sort: compares adjacent indices and kind of bubbles up the larger number.
+Consider an array [5,1,4,2,8]
+
+start at index 1 (element is 5) begin comparsion with adjacent indices
+[5,1,4,2,8] - 5 > 1 ? -> yes, swap 
+[1,5,4,2,8] - 5 > 4 ? -> yes, swap 
+[1,4,5,2,8] - 5 > 2 ? -> yes, swap
+[1,4,2,5,8] - 5 ? 8 ? -> no, stay
+start at index 2 (element is 4)
+[1,4,2,5,8] - 4 > 2 ? -> yes swap
+[1,2,4,5,8] - 4 > 5 ? -> no, stay
+start at index 3 (element is 4) 
+[1,2,4,5,8] - 4 > 5 ? -> no stay
+array is sorted. (best case O(n), worst case O(n^2))
+
+
+Insertion Sort: builds final sorted array one element at a time. It iterates through the input array list, removing one element at a time and inserting it into its correction position in the sorted array. Continue until sorted. 
+Stable sorting algorithm, meaning it maintains the relative order of equal elements in the input array.
+
+
+Selection Sort: utilizes two parts, a (usually empty array) sorted array list and the unsorted input array list. It iterates through the unsorted input array list and repeatedly selects the smallest (or largest) element and pushes/moves it to the beginning of the sorted array list.
+Unstable sorting algorithm, it may not maintain the relative order of equal elements in the input array.
+Consider an array: [62,25,12,22,11]
+
+Find the min element in the array [0...4]
+place at the beginning of array [0...4]
+[11,25,12,22,64]
+Find the min element in the array [1...4]
+place at the beginning of array [1...4]
+[11,12,25,22,64]
+Find the min element in the array [2...4]
+place at the beginning of array [2...4]
+[11,12,22,25,64]
+Find the min element in the array [3...4]
+place at the beginning of array [3...4]
+[11,12,22,25,64] array is sorted.
+
+Similar but different!
+Insertion Sort scans the unsorted part of the array list to find the mininum element.
+Selection Sort scans the sorted part of the array list to find the correction position to place the element.
+Selection sort requires fewer steps than insertion sort, but has more comparisons.
+Insertion is more efficient than selection sort when the input array is partially sorted or almost sorted.
+Selection sort is more efficient than the insertion sort when the input array is highly unsorted.
+Both are in-place sorting of the array(don't create a new variable or array)
+
+
+
+
+DIVIDE & CONQUER SORTS // 
+examples: Mergesort, Quicksort
+
+Recursively divide lists and sort smaller parts of list until the entire list is sorted.
+O(n log n) we must look at everything, but we don't have to compare everything to everything else to sort it. 
+
+~
+Mergesort: 
+is O (n log n): it chops the problem in halves, (logarithmic), and must do a final loop to merge (linear).
+this results in less comparisons than native sorts, as we only compare elements when merging the sub arrays
+This is not a inplace sort, so more memory/space complexity to keep in mind.
+
+1. Takes an array and divides it into two sub arrays
+2. Divides it again into another two sub arrays, 
+3. Continued/repeat until the all sub arrays are split into a length of 1. (an array with a length of 1, one element in the array, is sorted)
+4. Recursively merge the sorted sub arrays (we merge each sub array)
+
+Consider an array: [38,27,43,3,9,82,10]
+divide into sub arrays ->   [38,27,43,3]   [9,82,10]
+                                /   \         /   \
+divide into sub arrays ->  [38,27] [43,3]  [9,82] [10]
+                             / \      /  \    / \     \
+divide into sub arrays -> [38] [27] [43] [3] [9] [82] [10]
+merge sub arrays            \  /      \ /      \ /     /
+                       -> [27,38]   [3,43]   [82,9] [10]
+                             \        /        |   /
+                       ->  [3,27,38,43]    [9,10,82]
+                                   \       /
+                       ->    [3,9,10,27,38,43,82]
+array is sorted!
+
+Breaking down the merge step:
+ we have two pointers, each pointer looking at the beginning and the end of the array, each step we ask which is less, and recreate a new array each time each of these steps, we're creating a new array. (a pointer is essentially the variable holding/tracking an index, so two pointers would be two variables holding/tracking a different or same index)
+The merge process compares the two pointers, we check which one is less and slice it off to add/push to the new array. We continue until we slice off the entire array and it is pushed into the new array in a sorted position.
+ Psuedocode of the merge routine:
+// initialize empty array
+// compare the first index of the left array to the first index of the right array
+// push the lower value to the empty array
+// shift the array with the lower value
+// repeat until both L and R arrays are empty
+ e.g. 
+// merge our L array and R array
+// L [3,27] // R [9,10]
+// []
+// compare pointers: 3 > 9 ? -> push 3 into empty array
+// [3] // push the lower value to the empty array
+// L [27] // R [9,10] // shift the array with the lower value: L
+// compare pointers: 27 > 9 ? -> push 9 into new array
+// [3,9] 
+// L [27] // R [10] // shift the array with the lower value: R
+// [3,9,10]
+// L [27] // R []
+// [3,9,10,27] // new array is sorted with elements of L and R arrays, both of which are now empty
+// L [] // R [] // exit loop, return sorted list .. continue until all arrays are merged into one
+
+Overview Concept: Merge Sort
+Step 1:
+Divide input array into 'n' single element subarrays
+e.g                           [38,27,43,3,9,82,10]
+divide into sub arrays ->   [38,27,43,3]   [9,82,10]
+                                /   \         /   \
+divide into sub arrays ->  [38,27] [43,3]  [9,82] [10]
+                             / \      /  \    / \     \
+divide into sub arrays -> [38] [27] [43] [3] [9] [82] [10]
+
+Step 2:
+Repeatedly merge subarrays and sort on each merge
+We return our merge step each step of the way
+e.g                       
+                       -> [38] [27] [43] [3] [9] [82] [10]
+merge sub arrays            \  /      \ /      \ /     /
+                       -> [27,38]   [3,43]   [82,9] [10]
+                             \        /        |   /
+                       ->  [3,27,38,43]    [9,10,82]
+                                   \       /
+                       ->    [3,9,10,27,38,43,82]
+
+mergeSort(list) psuedocode
+    base case: if list.length < 2, return
+    break the list into halves L & R
+    Lsorted = mergeSort(L)
+    Rsorted = mergeSort             (               R)
+    return merge(Lsorte d               , Rsorted)
+
+psuedocode: merge
+ simpilfied analysis mergeSort(list)
+ constant time:    initialize n to the length of the list
+ constant time:    base case is if n < 2, just return
+ constant time:    initialize mid to n/2
+ N/A          :    left = left slice of array to mid - 1
+ N/A          :    right = right slice of array to mid to n - 1
+ n/2          :    mergeSort(left)
+ n/2          :    mergeSort(right)
+ linear       :    merge(left, right, a)
+-> O(n*logn)
+
+
+
+**Comparison sorts can never be less than linear, because we must compare one item with another at some point.
+**Non-comparsion sorts: Bucket Sort, Counting Sort, Radix Sort
