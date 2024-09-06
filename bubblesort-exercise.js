@@ -65,11 +65,11 @@ function bubbleSortBasic(array) {
 }
 console.log(`----basic----`)
 console.log(`basic: arrayRandom`)
-console.log(bubbleSortBasic(arrayRandom))
+console.log(bubbleSortBasic(arrayRandom.slice()))
 console.log(`basic: arrayOrdered`)
-console.log(bubbleSortBasic(arrayOrdered))
+console.log(bubbleSortBasic(arrayOrdered.slice()))
 console.log(`basic: arrayReversed`)
-console.log(bubbleSortBasic(arrayReversed))
+console.log(bubbleSortBasic(arrayReversed.slice()))
 
 // optimized
 function bubbleSort(array) {
@@ -80,6 +80,7 @@ function bubbleSort(array) {
     let swapped;
     do {
         counterOuter++
+        // if no swaps occur, it is sorted, so just return it
         swapped = false;
         for (let i = 0; i < array.length; i++) {
             counterInner++
