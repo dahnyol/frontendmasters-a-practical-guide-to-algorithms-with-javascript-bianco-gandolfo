@@ -33,3 +33,13 @@ Memoization
 Memoization is the programmatic practice of making long recursive/iterative functions run much faster. By caching the values that the function returns after its initial execution.
 
 When we input the same value into our memoized function, it returns the value stored in the cache instead of running the function again, thus boosting performance. No longer does your program have to recalculate every number to get a result.
+
+
+Data Structure      : Common Use 
+
+Arrays & Strings    : ordered data, words
+Hash Tables         : optimization
+Linked Lists        : data insert/delete
+Stacks/Queues       : creative aux DS
+Trees, Heaps        : hierarchical data
+Graphs              : complex relationships
