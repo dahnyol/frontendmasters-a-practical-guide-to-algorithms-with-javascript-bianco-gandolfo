@@ -141,8 +141,8 @@ mergeSort(list) psuedocode
     base case: if list.length < 2, return
     break the list into halves L & R
     Lsorted = mergeSort(L)
-    Rsorted = mergeSort             (               R)
-    return merge(Lsorte d               , Rsorted)
+    Rsorted = mergeSort(R)
+    return merge(Lsorted, Rsorted)
 
 psuedocode: merge
  simpilfied analysis mergeSort(list)
