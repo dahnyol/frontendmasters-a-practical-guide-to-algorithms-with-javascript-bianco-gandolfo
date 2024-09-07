@@ -1,0 +1,76 @@
+// Greedy algorithms: always make the locally optimal choice!
+//     Take the short-sighted solution -- given a decision, take the best decision at the time, without considering the big picture. 
+//     e.g. You can have 1 oreo now, or 2 oreos if you wait 10 minutes? younger children will often pick immediate gratification, 1 oreo, over delayed gratification, waiting for 2 oreos.
+// Weighted Graph -- go from city a to city g, roads a to b and a to c have different distances.
+// Greedy algorithms will take whatever the shortest road is at the current choice. 
+// This leads to an overall less efficient path, more miles traveled, than if we considered the big picture and picked our roads accordingly.
+//  So why use them? There are cases where the datasets are so large there is no way to optimally map the best solution and greedy algorithms is a better solution than no solution.
+
+// Write a function, makeChange, that returns an integer that represents the least number of coins that add up to an amount where the amount is always divisible by 5.
+// coin values: 5, 10, 25
+// input amount: 40, output # of coins: 3 (25, 10, 5)
+// input amount: 35, output # of coins: 2 (25, 10)
+
+// function makeChange(coins, amount){
+//     // sort coins (desc), so we start with highest coin value 
+//     coins.sort((a,b) => b - a);
+//     let coinTotal = 0;
+//     let i = 0;
+//     // base case when amount is 0.
+//     while (amount > 0) {
+//         // if the current coin is at least as large as the current amount, coin[0] is 25, the amount must be 25 or more.
+//         if (coins[i] <= amount) {
+//             // decrement the largest coin possible.
+//             amount -= coins[i]
+//             coinTotal++;
+//         } else {
+//             // if current coin is too large, 25 <= 10
+//             // increment index, so next loop we use coins[i] is the next coin we check with, in this case 10.
+//             i++;
+//         }
+//     }
+//     return coinTotal;
+// }
+// console.log(makeChange([5,10,25], 50))
+// problem: what if we pass invalid inputs? makeChange([1,6,10], 12)
+// sometimes greedy algorithms look correct but are not optimally correct. 
+// Brute Force Approach: calculate every single combination possible and keep track of the mininum.
+
+// our coins = [1,6,10], amount: 12
+//                change(12) 
+//          -10 /   |-6       \  -1
+//    change(2)  change(6)     change(11)
+//  -1 |      -6 /    \ -1       -10 |  \ -6    \ -1
+// change(1) change(0) change(5)  ...   ...  ...
+//  -1 |                 |
+// change(0)            ...
+
+// our lowest possible coin combination is 2, -> change(12) - change(6) = change(6), change(6) - change(6) = change(0) aka 0 amount
+// depth of recursion for each decision tree is the same as the number of decisions madeunction makeChangeByForce(coins, amount)
+
+
+// Write a function, makeChange, that returns an integer that represents the least number of coins that add up to an amount, n.
+
+let recursionCounter = 0;
+const coins = [10, 6, 1]
+
+const makeChange = (value, i) => {
+    recursionCounter++;
+    console.log(`${recursionCounter}: calling ${value} at ${i}`)
+
+    if (value === 0) return 0; // base case is when our value is 0
+    let minCoins;
+    coins.forEach((coin, i) => {
+        if (value - coin >= 0) {
+            let currMinCoins = makeChange(value - coin, i);
+            
+            if (minCoins === undefined || currMinCoins < minCoins) {
+                minCoins = currMinCoins;
+            }
+        } 
+    });
+    // increment to go to the next index in the coins array
+    return minCoins + 1;
+}
+
+console.log(makeChange(12))
