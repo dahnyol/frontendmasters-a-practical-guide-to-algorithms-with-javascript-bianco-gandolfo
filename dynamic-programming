@@ -1,0 +1,72 @@
+Dynamic Approach: cache values to avoid repeated calculations.
+
+In the greedy algorithm-brute force, we can use a cache to keep track of values and save time complexity.
+
+Top-down recursive technique -> we break a problem up into smaller pieces and we cache when we re-calculate something.
+
+Bottom-up iterative technique -> translate the recursion into an iterative solution, starting from the simplest problem and caching as it iterates up.
+
+Dynamic programming has:
+ overlapping subproblems
+ optimal substructure (tends to be recursive) 
+ caches to access
+
+Divide and conquer like mergesort steps do not overlap, but must go through individually as the steps change everytime.
+In dynamic programming you can cache and access it during repeated calculation.
+
+// Dynamic programming are essentially different ways to cache your solutions.
+
+// Combinational optimization:
+// How can we change our brute force makeChange using these practices
+
+
+//avoid global cache
+const cache = {};
+const coins [10,6,1]
+
+makeChange = c => {
+    // Return the value if it is in the cache
+    if (cache[c]) return cache[c]
+
+    let minCoins = -1;
+
+    // Find the best coin
+    coins.forEach((coin) => {
+        if (c - coin >= 0) {
+            let currMinCoins = makeChange(c - coin);
+            if (minCoins === -1 || currMinCoins < minCoins) {
+                minCoins = currMinCoins
+            }
+        }
+    })
+    // Save the value to the cache
+    cache[c] = minCoins + 1;
+    return cache[c];
+}
+
+
+// put cache inside function, return function inside of function 
+makeChange = (c) => {
+    const cache = {};
+
+    // Return the value if it is in the cache
+    if (cache[c]) return cache[c]
+
+    let minCoins = -1;
+
+    // Find the best coin
+    return ((coin) => {
+        if (c - coin >= 0) {
+            let currMinCoins = makeChange(c - coin);
+            if (minCoins === -1 || currMinCoins < minCoins) {
+                minCoins = currMinCoins
+            }
+        }
+        // Save the value to the cache
+        cache[c] = minCoins + 1;
+        return cache[c];
+    })
+}
+
+//const makeChangeCoins = makeChange()
+//console.log(makeChangeCoins(coins))
